@@ -5,12 +5,14 @@ volumes:
 services:
   db:
     image: postgres:13.10
+    restart: unless-stopped
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
     build: ./backend/
     env_file: .env
+    restart: unless-stopped
     depends_on:
       - db
     volumes:
@@ -22,6 +24,7 @@ services:
       - static:/staticfiles
   gateway:
     build: ./gateway/
+    restart: unless-stopped
     ports:
       - "127.0.0.1:8000:80"
     volumes:
